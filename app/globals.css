@@ -20,6 +20,12 @@
   --accent-soft: #0f172a;
 }
 
+/* Ensure native date picker icon is visible in dark theme (Chrome/Edge/Safari) */
+:root.dark input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  opacity: 0.85;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -44,4 +50,30 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, BlinkMacSystemFont,
     "Segoe UI", sans-serif;
+}
+
+.shimmer {
+  position: relative;
+  overflow: hidden;
+}
+
+.shimmer::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background-image: linear-gradient(
+    120deg,
+    transparent,
+    color-mix(in_oklab, var(--card-background) 65%, #ffffff 35%),
+    transparent
+  );
+  animation: shimmer-slide 1.4s infinite;
+  opacity: 0.8;
+}
+
+@keyframes shimmer-slide {
+  100% {
+    transform: translateX(100%);
+  }
 }

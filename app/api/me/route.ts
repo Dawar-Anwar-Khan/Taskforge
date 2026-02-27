@@ -1,13 +1,26 @@
-import { NextResponse } from "next/server";
+import { NextResponse } from 'next/server'
+import { getSession } from '@/lib/auth'
+import { connectDB } from '@/lib/db'
+import User from '@/models/userModel'
 
 export async function GET() {
-  // Placeholder implementation. Replace with real auth-backed data when available.
-  const user = {
-    id: "1",
-    name: "John Employee",
-    role: "Employee",
-  };
+  const session = await getSession()
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
 
-  return NextResponse.json(user);
+  await connectDB()
+  const user = await User.findById(session.id).select('-password')
+
+  if (!user) {
+    return NextResponse.json({ error: 'User not found' }, { status: 404 })
+  }
+
+  return NextResponse.json({
+    id: user._id,
+    name: user.name,
+    email: user.email,
+    role: user.role,
+  })
 }
 
