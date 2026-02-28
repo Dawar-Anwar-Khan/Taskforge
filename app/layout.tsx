@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "TaskForge Dashboard",
-  description: "Minimalist task management dashboard",
+  title: "TaskForge — HR Task Management",
+  description: "TaskForge HR task management: assign, track, and review work across your organization.",
 };
 
 export default function RootLayout({

@@ -94,7 +94,7 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="mx-auto min-h-screen max-w-6xl px-4 py-10 sm:px-8 sm:py-12">
+    <div className="mx-auto min-h-screen max-w-6xl px-4 py-15 sm:px-8 sm:py-12">
       {/* Header */}
       <header className="flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
         <div>

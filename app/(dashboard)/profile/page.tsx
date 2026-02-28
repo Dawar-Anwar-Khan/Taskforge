@@ -5,13 +5,12 @@ import { connectDB } from '@/lib/db'
 import User from '@/models/userModel'
 
 export default async function ProfilePage() {
-  const session = await getSession()
+  const [session] = await Promise.all([getSession(), connectDB()])
 
   if (!session) {
     return null
   }
 
-  await connectDB()
   const user = await User.findById(session.id).select('-password -__v')
 
   if (!user) {

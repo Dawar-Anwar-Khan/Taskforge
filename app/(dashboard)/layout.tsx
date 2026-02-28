@@ -1,7 +1,7 @@
 "use client"
 
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { toast } from "sonner";
 import Link from "next/link";
 import {
@@ -19,6 +19,7 @@ import { useGetMeQuery } from "@/lib/meApi";
 import { useDispatch } from "react-redux";
 import { resetAllApiState } from "@/lib/resetApiState";
 import type { AppDispatch } from "@/lib/store";
+import { TaskForgeLogoWithTagline } from "@/app/components/taskforge-logo";
 
 export default function DashboardLayout({
   children,
@@ -30,6 +31,17 @@ export default function DashboardLayout({
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const { data: me } = useGetMeQuery();
   const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    if (sidebarOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [sidebarOpen]);
 
   const allLinks = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard, adminOnly: false },
@@ -60,6 +72,15 @@ export default function DashboardLayout({
       >
         <Menu size={18} />
       </button>
+      {/* Mobile backdrop */}
+      {sidebarOpen && (
+        <button
+          type="button"
+          aria-label="Close menu"
+          onClick={() => setSidebarOpen(false)}
+          className="fixed inset-0 z-30 bg-black/50 backdrop-blur-sm md:hidden"
+        />
+      )}
       {/* Sidebar */}
       <aside
         className={`fixed inset-y-0 left-0 z-40 flex w-56 shrink-0 flex-col border-r border-[var(--card-border)] bg-[var(--card-background)] transition-transform duration-200 md:static md:translate-x-0 ${
@@ -68,21 +89,18 @@ export default function DashboardLayout({
       >
         {/* Brand row */}
         <div className="flex items-start justify-between px-5 pt-5 pb-4">
-          <div>
-            <p className="text-sm font-semibold text-[var(--accent)]">
-              Task Manager
-            </p>
-            <p className="mt-0.5 flex items-center gap-1 text-xs text-[var(--muted-foreground)]">
-              {me?.role === "admin" ? (
+          <TaskForgeLogoWithTagline
+            tagline={
+              me?.role === "admin" ? (
                 <>
                   <TbShield className="text-emerald-500" size={18} />
                   Admin Portal
                 </>
               ) : (
                 "Employee Portal"
-              )}
-            </p>
-          </div>
+              )
+            }
+          />
           <button
             type="button"
             onClick={() => setSidebarOpen(false)}
