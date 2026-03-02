@@ -12,13 +12,20 @@ function applyTheme(value: Theme) {
 }
 
 export function ThemeToggle() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window === "undefined") return "light";
+  const [theme, setTheme] = useState<Theme>("light");
+
+  // Hydration-safe: first render is always "light" on both server and client.
+  // Then we read the real preference on the client and update once.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
     const stored = window.localStorage.getItem("theme") as Theme | null;
-    if (stored === "light" || stored === "dark") return stored;
+    if (stored === "light" || stored === "dark") {
+      setTheme(stored);
+      return;
+    }
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    return prefersDark ? "dark" : "light";
-  });
+    setTheme(prefersDark ? "dark" : "light");
+  }, []);
 
   useEffect(() => {
     applyTheme(theme);

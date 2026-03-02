@@ -1,4 +1,3 @@
-// models/Task.ts
 import mongoose, { Schema, Document } from 'mongoose'
 
 export interface ITask extends Document {
@@ -21,4 +20,6 @@ const TaskSchema = new Schema<ITask>({
   createdAt:   { type: Date, default: Date.now },
 })
 
-export default mongoose.models.Task || mongoose.model<ITask>('Task', TaskSchema)
+const Task = mongoose.models.Task as mongoose.Model<ITask> ?? mongoose.model<ITask>('Task', TaskSchema)
+
+export default Task

@@ -1,4 +1,3 @@
-// models/User.ts
 import mongoose, { Schema, Document } from 'mongoose'
 
 export interface IUser extends Document {
@@ -19,4 +18,7 @@ const UserSchema = new Schema<IUser>({
   createdAt:          { type: Date, default: Date.now },
 })
 
-export default mongoose.models.User || mongoose.model<IUser>('User', UserSchema)
+// This is the critical fix — always define the schema first, then check models
+const User = mongoose.models.User as mongoose.Model<IUser> ?? mongoose.model<IUser>('User', UserSchema)
+
+export default User

@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 import { ThemeToggle } from '@/app/components/theme-toggle'
 import { TaskForgeLogo } from '@/app/components/taskforge-logo'
+import Link from 'next/link'
 import { useDispatch } from 'react-redux'
 import { resetAllApiState } from '@/lib/resetApiState'
 import type { AppDispatch } from '@/lib/store'
@@ -97,6 +98,31 @@ export default function LoginPage() {
             {loading ? 'Signing in...' : 'Sign in'}
           </button>
         </form>
+
+        <div className="mt-6 space-y-2 text-xs text-[var(--muted-foreground)]">
+          <div className="flex flex-wrap items-center justify-center gap-2">
+            <Link className="hover:text-[var(--accent)]" href="/about">
+              About
+            </Link>
+            <span>•</span>
+            <Link className="hover:text-[var(--accent)]" href="/faq">
+              FAQ
+            </Link>
+            <span>•</span>
+            <Link className="hover:text-[var(--accent)]" href="/contact">
+              Contact
+            </Link>
+            <span>•</span>
+            <Link className="hover:text-[var(--accent)]" href="/privacy">
+              Privacy
+            </Link>
+            <span>•</span>
+            <Link className="hover:text-[var(--accent)]" href="/terms">
+              Terms
+            </Link>
+          </div>
+          <p className="text-center">© {new Date().getFullYear()} TaskForge. All rights reserved.</p>
+        </div>
       </div>
     </div>
   </>

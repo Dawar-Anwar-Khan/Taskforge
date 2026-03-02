@@ -13,6 +13,10 @@ import {
   X,
   ShieldCheck,
   Menu,
+  HelpCircle,
+  Mail,
+  Info,
+  FileText,
 } from "lucide-react";
 import { TbShield } from "react-icons/tb";
 import { useGetMeQuery } from "@/lib/meApi";
@@ -52,6 +56,14 @@ export default function DashboardLayout({
     { href: "/profile", label: "Profile", icon: UserCircle, adminOnly: false },
   ];
   const navLinks = allLinks.filter((l) => !l.adminOnly || me?.role === "admin");
+  const supportLinks = [
+    { href: "/about", label: "About", icon: Info },
+    { href: "/faq", label: "FAQ", icon: HelpCircle },
+    { href: "/contact", label: "Contact", icon: Mail },
+    { href: "/privacy", label: "Privacy", icon: FileText },
+    { href: "/terms", label: "Terms", icon: FileText },
+    { href: "/cookies", label: "Cookies", icon: FileText },
+  ];
 
   async function handleLogout() {
     await fetch("/api/auth/logout", { method: "POST" });
@@ -130,6 +142,31 @@ export default function DashboardLayout({
               </Link>
             );
           })}
+
+          <div className="mt-4 px-3">
+            <div className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--muted-foreground)]">
+              Help &amp; Legal
+            </div>
+          </div>
+          <div className="space-y-0.5">
+            {supportLinks.map(({ href, label, icon: Icon }) => {
+              const active = pathname === href;
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={`flex items-center gap-2.5 rounded-md px-3 py-2 text-sm transition-colors ${
+                    active
+                      ? "bg-[var(--accent)] text-[var(--background)]"
+                      : "text-[var(--muted-foreground)] hover:bg-[color-mix(in_oklab,var(--background)_94%,#ffffff_6%)] hover:text-[var(--accent)]"
+                  }`}
+                >
+                  <Icon size={15} strokeWidth={1.8} />
+                  {label}
+                </Link>
+              );
+            })}
+          </div>
         </nav>
 
         {/* Bottom: user card + logout */}
@@ -162,7 +199,12 @@ export default function DashboardLayout({
 
       {/* Page content */}
       <main className="flex-1 overflow-y-auto bg-[var(--background)] text-[var(--foreground)]">
-        {children}
+        <div className="flex min-h-full flex-col">
+          <div className="flex-1">{children}</div>
+          <footer className="text-center border-t border-[var(--card-border)] px-4 py-3 text-xs text-[var(--muted-foreground)] sm:px-8">
+            <p>© {new Date().getFullYear()} TaskForge. All rights reserved.</p>
+          </footer>
+        </div>
       </main>
     </div>
   );

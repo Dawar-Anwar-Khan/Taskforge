@@ -117,6 +117,31 @@ Exact role names and capabilities can be adapted to your organization’s needs,
   - Tailwind CSS and component utilities (`class-variance-authority`, `tailwind-merge`) for consistent styling.
   - Iconography powered by `lucide-react` and `react-icons`.
 
+## Pages and navigation
+
+TaskForge focuses on a clean, theme-aware UX while covering the expected surfaces of a modern internal tool:
+
+- **Authentication & onboarding**
+  - `/login` — role-based sign-in page with dark/light theme toggle and TaskForge branding.
+  - `/change-password` — first-time password setup and enforced password change flow for seeded accounts.
+- **Core application**
+  - `/` — main dashboard showing role-aware stats and task list.
+  - `/employees` — admin view for managing employee records.
+  - `/tasks` — admin task management surface.
+  - `/profile` — profile + password management for the current user.
+- **System pages**
+  - `app/not-found.tsx` — branded 404 page for missing routes.
+  - `app/error.tsx` — friendly error boundary with retry and “back to dashboard” actions.
+- **Legal & compliance pages**
+  - `/privacy` — privacy policy describing how TaskForge handles personal information.
+  - `/terms` — terms of use describing acceptable and intended use of the application.
+  - `/cookies` — cookie policy covering essential and analytics cookies.
+- **Support & communication**
+  - `/about` — overview of the project and UX/security intent.
+  - `/contact` — description of how this demo would map to a real support/contact surface.
+  - `/faq` — short FAQ for reviewers and potential adopters.
+  - `/maintenance` — example maintenance page to show how downtime would be communicated.
+
 ## Technology stack
 
 - **Framework**: Next.js 16 (App Router)
@@ -139,6 +164,14 @@ Exact role names and capabilities can be adapted to your organization’s needs,
   - ESLint (`eslint-config-next`)
   - TypeScript
   - `ts-node` and `tsconfig-paths` for scripting and local tooling
+
+## Metadata, favicon, and sitemap
+
+- The root layout exports a `metadata` object with a concise title and description suitable for internal HR tooling.
+- `app/icon.tsx` generates the favicon and app icon using the Next.js metadata file convention.
+- `app/sitemap.ts` provides a basic sitemap for key public-facing routes (login, legal, support, maintenance). For production use you should adapt the base URL and which routes are included.
+
+If you adapt TaskForge into a public SaaS, you can extend this with `robots.ts`, richer per-page metadata via `generateMetadata`, and Open Graph/Twitter cards for marketing pages.
 
 ## Environment configuration
 

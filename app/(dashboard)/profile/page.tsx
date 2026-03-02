@@ -24,7 +24,7 @@ export default async function ProfilePage() {
   })
 
   return (
-    <div className="mx-auto min-h-screen max-w-6xl px-5 py-12">
+    <div className="mx-auto min-h-screen max-w-6xl px-5 pt-12">
      <div className="flex justify-between items-center">
      <h1 className="mb-8 text-2xl font-semibold text-[var(--accent)]">Profile</h1>
      <ThemeToggle />

@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import * as jose from 'jose'
 
-const PUBLIC = ['/login']
+const AUTH_REDIRECT_ROUTES = ['/login']
+const PUBLIC_ROUTES = [
+  '/login',
+  '/about',
+  '/privacy',
+  '/terms',
+  '/cookies',
+  '/contact',
+  '/faq',
+  '/maintenance',
+  '/sitemap.xml',
+]
 
 export async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl
@@ -20,9 +31,10 @@ export async function middleware(req: NextRequest) {
 
   const session = await getSession()
 
-  // Logged in user hitting /login → send to dashboard (/)
-  if (PUBLIC.some(r => pathname.startsWith(r))) {
-    if (session && !session.mustChangePassword) {
+  // Always-allowed public routes (legal, support, maintenance, sitemap, login)
+  if (PUBLIC_ROUTES.some(route => pathname.startsWith(route))) {
+    // Logged in user hitting /login → send to dashboard (/)
+    if (AUTH_REDIRECT_ROUTES.some(route => pathname.startsWith(route)) && session && !session.mustChangePassword) {
       return NextResponse.redirect(new URL('/', req.url))
     }
     return NextResponse.next()
